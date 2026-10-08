@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#c2421c">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>BioVisión Deportiva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: una sola columna de laboratorio de bolsillo; el número manda, el video es la evidencia. */
+:root {
+  --bg: #f2f4f1;
+  --surface: #ffffff;
+  --sunk: #e7ebe6;
+  --ink: #16211c;
+  --muted: #56655d;
+  --line: #d3dbd5;
+  --accent: #c2421c;      /* tartán de pista: lado derecho y acción principal */
+  --accent-ink: #ffffff;
+  --side-l: #1d6c84;      /* lado izquierdo */
+  --ok: #2c7a4b;
+  --warn: #a8701a;
+  --bad: #b3261e;
+  --display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1412; --surface: #161e1b; --sunk: #1d2724; --ink: #e6ede9; --muted: #98a9a0;
+    --line: #2a3632; --accent: #f0693d; --accent-ink: #1a0d07; --side-l: #52b6d3;
+    --ok: #5cc28a; --warn: #e0a64a; --bad: #f2786e; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1412; --surface: #161e1b; --sunk: #1d2724; --ink: #e6ede9; --muted: #98a9a0;
+  --line: #2a3632; --accent: #f0693d; --accent-ink: #1a0d07; --side-l: #52b6d3;
+  --ok: #5cc28a; --warn: #e0a64a; --bad: #f2786e; color-scheme: dark;
+}
+html, body { background: var(--bg); color: var(--ink); }
+body { font: 15px/1.5 var(--body); }
+* { box-sizing: border-box; }
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.bar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  display: flex; align-items: baseline; gap: 10px;
+  padding: 10px 16px; background: var(--bg); border-bottom: 1px solid var(--line);
+}
+.brand { font: 700 22px/1 var(--display); letter-spacing: .02em; text-transform: uppercase; margin: 0; }
+.brand b { color: var(--accent); font-weight: 700; }
+.bar small { color: var(--muted); font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+
+main { max-width: 760px; margin: 0 auto; padding: 16px 16px 48px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+section { display: grid; gap: 16px; min-width: 0; }
+section > *, #result-body > * { min-width: 0; }
+#result-body { display: grid; gap: 18px; min-width: 0; }
+main > * { min-width: 0; }
+h2 { font: 700 30px/1.05 var(--display); text-transform: uppercase; letter-spacing: .01em; margin: 0; text-wrap: balance; }
+h3 { font: 600 19px/1.1 var(--display); text-transform: uppercase; letter-spacing: .04em; margin: 0; color: var(--muted); }
+p { margin: 0; max-width: 62ch; }
+.lead { color: var(--muted); }
+
+/* lista de análisis */
+.tests { display: grid; gap: 10px; }
+.test {
+  display: grid; grid-template-columns: 72px 1fr auto; align-items: center; gap: 14px;
+  width: 100%; text-align: left; padding: 14px; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+}
+.test:hover { border-color: var(--accent); }
+.test .unit {
+  font: 700 20px/1 var(--display); text-transform: uppercase; color: var(--accent);
+  border-right: 1px solid var(--line); padding-right: 10px; text-align: center;
+}
+.test strong { display: block; font: 600 21px/1.1 var(--display); text-transform: uppercase; letter-spacing: .02em; }
+.test span.d { display: block; color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+.test .go { color: var(--muted); font-size: 22px; }
+.tag { font: 500 11px/1 var(--mono); text-transform: uppercase; letter-spacing: .06em; padding: 4px 6px; border-radius: 4px; background: var(--sunk); color: var(--muted); white-space: nowrap; }
+
+.back { justify-self: start; background: none; border: 0; padding: 4px 0; color: var(--muted); cursor: pointer; }
+.tip { background: var(--sunk); border-radius: var(--radius); padding: 12px 14px; display: grid; gap: 6px; }
+.tip ul { margin: 0; padding-left: 18px; display: grid; gap: 3px; font-size: 14px; }
+
+.picker {
+  display: grid; place-items: center; gap: 6px; padding: 26px 16px; text-align: center; cursor: pointer;
+  border: 2px dashed var(--line); border-radius: var(--radius); background: var(--surface);
+}
+.picker:hover, .picker:focus-within { border-color: var(--accent); }
+.picker strong { font: 600 22px/1 var(--display); text-transform: uppercase; }
+.picker span { color: var(--muted); font-size: 13px; }
+.picker input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+
+.fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.field { display: grid; gap: 4px; min-width: 0; }
+.field label, .field .lbl { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.field input, .field select { padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); width: 100%; }
+.seg { display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg label { flex: 1; text-align: center; padding: 9px 6px; cursor: pointer; font-size: 14px; text-transform: none; letter-spacing: 0; color: var(--ink); background: var(--surface); }
+.seg input { position: absolute; opacity: 0; width: 1px; }
+.seg input:checked + span { color: var(--accent); font-weight: 600; }
+.seg label:has(input:checked) { background: var(--sunk); }
+.seg label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+.btn { border: 1px solid var(--line); background: var(--surface); padding: 11px 16px; border-radius: 8px; cursor: pointer; font-weight: 500; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font: 700 20px/1 var(--display); text-transform: uppercase; letter-spacing: .04em; padding: 14px 18px; }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+.calib { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; font-size: 14px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.calib .btn { padding: 6px 10px; font-size: 13px; }
+
+/* procesamiento */
+.progress { height: 8px; background: var(--sunk); border-radius: 99px; overflow: hidden; }
+.progress i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+.status { font: 500 13px/1.4 var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.stage { position: relative; background: #000; border-radius: var(--radius); overflow: hidden; max-width: 100%; }
+.stage video, .stage canvas.frame { display: block; width: 100%; height: auto; max-height: 62vh; object-fit: contain; }
+.stage canvas.over { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+/* resultados */
+.hero { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; align-items: end; padding: 4px 0 6px; border-bottom: 2px solid var(--ink); }
+.hero .num { font: 700 84px/.85 var(--display); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.hero .num small { font-size: 30px; color: var(--muted); margin-left: 4px; font-weight: 600; }
+.hero .cap { color: var(--muted); font-size: 14px; padding-bottom: 6px; }
+.hero .cap strong { display: block; color: var(--ink); font: 600 20px/1.1 var(--display); text-transform: uppercase; letter-spacing: .03em; }
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.metric { background: var(--surface); padding: 10px 12px; display: grid; gap: 2px; min-width: 0; }
+.metric .k { font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.metric .v { font: 600 28px/1.05 var(--display); font-variant-numeric: tabular-nums; }
+.metric .v small { font-size: 15px; color: var(--muted); margin-left: 2px; }
+.metric .s { font: 400 12px/1.3 var(--mono); color: var(--muted); }
+
+.chart { display: grid; gap: 6px; }
+.chart canvas { width: 100%; height: 210px; display: block; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); cursor: crosshair; touch-action: pan-y; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12.5px; color: var(--muted); }
+.legend i { display: inline-block; width: 14px; height: 3px; vertical-align: middle; margin-right: 6px; border-radius: 2px; }
+
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { padding: 9px 10px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+th { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 500; background: var(--sunk); }
+th:first-child, td:first-child { text-align: left; }
+tbody tr { cursor: pointer; }
+tbody tr:hover td { background: var(--sunk); }
+tr:last-child td { border-bottom: 0; }
+.pill { display: inline-block; padding: 2px 8px; border-radius: 99px; font: 600 12px/1.5 var(--body); }
+.pill.ok { color: var(--ok); background: color-mix(in srgb, var(--ok) 14%, transparent); }
+.pill.bad { color: var(--bad); background: color-mix(in srgb, var(--bad) 14%, transparent); }
+.pill.warn { color: var(--warn); background: color-mix(in srgb, var(--warn) 16%, transparent); }
+td.short { color: var(--bad); font-weight: 600; }
+
+.notes { font-size: 13.5px; color: var(--muted); display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 12px; }
+.notes ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.err { border: 1px solid var(--bad); color: var(--bad); background: color-mix(in srgb, var(--bad) 8%, var(--surface)); padding: 12px 14px; border-radius: var(--radius); }
+.toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 8px; font-size: 14px; max-width: calc(100% - 32px); z-index: 10; }
+footer { color: var(--muted); font-size: 12px; text-align: center; padding: 8px 16px 24px; }
+footer a { color: inherit; }
+@media (max-width: 480px) {
+  .hero .num { font-size: 68px; }
+  .test { grid-template-columns: 62px 1fr; }
+  .test .go { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .progress i { transition: none; } }
+</style>
+
+<header class="bar">
+  <h1 class="brand">Bio<b>Visión</b></h1>
+  <small>laboratorio de movimiento</small>
+</header>
+
+<main>
+  <!-- INICIO -->
+  <section id="home">
+    <p class="lead">Elige el gesto, graba o sube un video y el análisis corre en tu teléfono con MediaPipe Pose. El video no sale del dispositivo.</p>
+    <div class="tests" id="tests"></div>
+  </section>
+
+  <!-- CONFIGURACIÓN -->
+  <section id="setup" hidden>
+    <button class="back" data-go="home" type="button">← Análisis</button>
+    <h2 id="setup-title"></h2>
+    <div class="tip" id="setup-tip"></div>
+
+    <label class="picker" id="picker">
+      <input type="file" id="file" accept="video/*">
+      <strong id="picker-label">Elegir o grabar video</strong>
+      <span id="picker-sub">MP4 o MOV · se recomienda hasta 30 s</span>
+    </label>
+    <div class="stage" id="setup-stage" hidden><video id="preview" playsinline muted controls preload="metadata"></video></div>
+
+    <div class="fields">
+      <div class="field"><label for="from">Desde (s)</label><input id="from" type="number" min="0" step="0.1" value="0" inputmode="decimal"></div>
+      <div class="field"><label for="to">Hasta (s)</label><input id="to" type="number" min="0" step="0.1" value="0" inputmode="decimal"></div>
+      <div class="field" id="opt-knee" hidden>
+        <label for="knee">Pierna cercana a la cámara</label>
+        <select id="knee"><option value="right">Derecha</option><option value="left">Izquierda</option></select>
+      </div>
+      <div class="field" id="opt-dancers" hidden>
+        <label for="dancers">Bailarines en cuadro</label>
+        <select id="dancers"><option>2</option><option>3</option><option>4</option></select>
+      </div>
+      <div class="field">
+        <span class="lbl" id="lbl-model">Modelo</span>
+        <div class="seg" role="radiogroup" aria-labelledby="lbl-model">
+          <label><input type="radio" name="model" value="lite" id="m-lite"><span>Rápido</span></label>
+          <label><input type="radio" name="model" value="full" id="m-full" checked><span>Preciso</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="calib" id="calib" hidden></div>
+    <div class="row"><button class="btn primary" id="run" type="button" disabled>Analizar</button><span class="status" id="setup-status"></span></div>
+  </section>
+
+  <!-- PROCESANDO -->
+  <section id="running" hidden>
+    <h2 id="run-title">Analizando</h2>
+    <div class="progress"><i id="bar"></i></div>
+    <div class="status" id="run-status">Cargando el modelo de pose…</div>
+    <div class="stage"><canvas class="frame" id="live"></canvas></div>
+    <div class="row"><button class="btn" id="cancel" type="button">Cancelar</button></div>
+  </section>
+
+  <!-- RESULTADOS -->
+  <section id="result" hidden>
+    <button class="back" data-go="setup" type="button">← Otro video</button>
+    <div id="result-body"></div>
+  </section>
+</main>
+<footer>Análisis adaptados de <a href="https://github.com/jeremyipark/vision-demos" target="_blank" rel="noopener">jeremyipark/vision-demos</a> (Apache-2.0) · pose: MediaPipe Pose Landmarker</footer>
+<div class="toast" id="toast" hidden></div>
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
